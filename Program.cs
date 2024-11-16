@@ -1,70 +1,112 @@
-﻿using System;
-
+using System;
+using System.Collections.Generic;
+using ConsoleTables;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        //WorkWithStrings();
-        void WorkWithStrings ()
+        List<string> tasks = new List<string>();
+        string input;
+        do
         {
-            List<string> names = ["jane", "kim", "moses"];
-            names.Sort();
-            foreach (var name in names)
+            Console.Clear();
+            DisplayHeader();
+
+            Console.WriteLine("1. Add Task");
+            Console.WriteLine("2. Remove Task");
+            Console.WriteLine("3. View Tasks");
+            Console.WriteLine("4. Exit");
+            Console.Write("\nChoose an option (1-4): ");
+            input = Console.ReadLine();
+
+            switch (input)
             {
-                Console.WriteLine($"Hello {name.ToUpper()}");
+                case "1":
+                    AddTask(tasks);
+                    break;
+                case "2":
+                    RemoveTask(tasks);
+                    break;
+                case "3":
+                    ViewTasks(tasks);
+                    break;
+                case "4":
+                    Console.WriteLine("\nExiting the To-Do App. Goodbye!");
+                    break;
+                default:
+                    Console.WriteLine("\nInvalid option, please try again.");
+                    break;
             }
 
-
-            List<int> numbers = new List<int> { 1, 2, 3, 4, 5, 6 };
-
-            foreach (var number in numbers)
+            if (input != "4")
             {
-                Console.WriteLine($"This are the numbers {number}");
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
             }
 
+        } while (input != "4");
+    }
 
-            Console.WriteLine();
+    static void DisplayHeader()
+    {
+        // Displaying header with some colors
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("===================================");
+        Console.WriteLine("          To-Do List App");
+        Console.WriteLine("===================================");
+        Console.ResetColor();
+    }
 
-            names.Add("Maria");
-            names.Add("Bill");
-            names.Remove("Ana");
-            foreach (var name in names)
-            {
-                Console.WriteLine($"Hello {name.ToUpper()}!");
-            }
+    static void AddTask(List<string> tasks)
+    {
+        Console.Write("Enter task to add: ");
+        string task = Console.ReadLine();
+        tasks.Add(task);
+        Console.WriteLine($"\nTask '{task}' added successfully.");
+    }
+
+    static void RemoveTask(List<string> tasks)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("\nNo tasks to remove.");
+            return;
         }
 
-        List<int> fibonnacci = [1, 2,6];
-
-        var previos = fibonnacci[fibonnacci.Count - 1];
-
-        var previos2 = fibonnacci[fibonnacci.Count - 2];
-
-
-        fibonnacci.Add(previos + previos2);
-
-        foreach (var number in fibonnacci)
+        Console.WriteLine("\nTasks to remove:");
+        ViewTasks(tasks);
+        Console.Write("Enter the task number to remove: ");
+        int taskIndex;
+        
+        if (int.TryParse(Console.ReadLine(), out taskIndex) && taskIndex > 0 && taskIndex <= tasks.Count)
         {
-            Console.WriteLine(number);
+            string taskToRemove = tasks[taskIndex - 1];
+            tasks.RemoveAt(taskIndex - 1);
+            Console.WriteLine($"\nTask '{taskToRemove}' removed successfully.");
+        }
+        else
+        {
+            Console.WriteLine("\nInvalid task number.");
+        }
+    }
+
+    static void ViewTasks(List<string> tasks)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("\nNo tasks available.");
+            return;
         }
 
-        //Code to generate 20 numbers in fibonacci
+         ConsoleTables for better formatting
+        var table = new ConsoleTable("Task No.", "Task");
 
-        //List<int> fibonnacciNumbers = [1, 2];
+        for (int i = 0; i < tasks.Count; i++)
+        {
+            table.AddRow(i + 1, tasks[i]);
+        }
 
-        //for (int i = 2; i < 20; i++)
-        //{
-        //    var preview = fibonnacciNumbers[i- 1] + fibonnacciNumbers[i-2];
-        //    fibonnacciNumbers.Add(preview);
-        //}
-
-        //foreach (var item in fibonnacciNumbers)
-        //{
-        //    Console.WriteLine(item);
-        //}
-
-
+        table.Write(Format.Alternative);
     }
 }
-
