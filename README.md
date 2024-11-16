@@ -21,7 +21,10 @@ A basic To-Do list application built with C# that allows users to add, remove, a
 2. Open the project in Visual Studio or any C# compatible IDE.
 
 3. Build and run the application by pressing `F5` or using the terminal:
-
+   
+   ```bash
+   dotnet add package ConsoleTables
+   ```
    ```bash
    dotnet run
    ```
